@@ -1,9 +1,9 @@
 # gitconfig
 [user]
-    name = Nick Nisi
-    email = nick@nisi.org
+	name = Hu, Hebo
+	email = hebo.hu@intel.com
 [github]
-    user = nicknisi
+	user = windsmell
 [init]
     templatedir = ~/.dotfiles/git/templates
 [alias]
@@ -152,7 +152,7 @@
     extendRegexp = true
     lineNumber = true
 [credential]
-	helper = osxkeychain
+	helper = store
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [mergetool "Kaleidoscope"]
@@ -163,3 +163,14 @@
 [pager]
     diff = "diff-so-fancy | less --tabs=4 -RFX"
     show = "diff-so-fancy | less --tabs=4 -RFX"
+
+[url "ssh://hhu16@android.intel.com:29418/"]
+	insteadOf=git://android.intel.com/
+	insteadOf=ssh://android.intel.com/
+	insteadOf=ssh://android.intel.com:29418/
+	insteadOf=git://android-mirror-sh.devtools.intel.com/
+	insteadOf=ssh://android-mirror-sh.devtools.intel.com/
+	insteadOf=git://android-mirror.devtools.intel.com/
+	insteadOf=ssh://android-mirror.devtools.intel.com/
+	insteadOf=ssh://android-mirror.devtools.intel.com:29418/
+

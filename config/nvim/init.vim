@@ -20,8 +20,8 @@ set textwidth=120
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
 
 if (has('nvim'))
 	" show results of substition as they're happening
@@ -32,6 +32,9 @@ endif
 " }}}
 
 " Section User Interface {{{
+
+" find files recursively based on current directory for gf command
+set path+=**
 
 " switch cursor to line when in insert mode, and block when not
 set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
@@ -48,12 +51,15 @@ if (has('mac') && empty($TMUX) && has("termguicolors"))
     set termguicolors
 endif
 
-let g:onedark_termcolors=16
+let g:onedark_termcolors=256
 let g:onedark_terminal_italics=1
 
 syntax on
 " set t_Co=256                " Explicitly tell vim that the terminal supports 256 colors"
-colorscheme onedark         " Set the colorscheme
+" colorscheme kalisi " Set the colorscheme
+" set background=light
+
+colorscheme onedark " Set the colorscheme
 
 " make the highlighting of tabs and other non-text less annoying
 highlight SpecialKey ctermbg=none ctermfg=236
@@ -67,20 +73,22 @@ highlight Type cterm=italic
 highlight Normal ctermbg=none
 
 set number                  " show line numbers
-" set relativenumber          " show relative line numbers
+set relativenumber          " show relative line numbers
 
 set wrap                    " turn on line wrapping
 set wrapmargin=8            " wrap lines when coming within n characters from side
 set linebreak               " set soft wrapping
 set showbreak=…             " show ellipsis at breaking
 
+" indent setting 
 set autoindent              " automatically set indent of new line
 set smartindent
+set cindent shiftwidth=4
+set cinoptions+==0
 
 " toggle invisible characters
 set list
-set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
-set showbreak=↪
+set listchars=tab:→\ ,eol:¬,trail:-,extends:>,precedes:<
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -89,7 +97,7 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 set backspace=indent,eol,start
 
 " Tab control
-set noexpandtab             " insert tabs rather than spaces for <Tab>
+set expandtab               " spaces for <Tab>
 set smarttab                " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
 set tabstop=4               " the visible width of tabs
 set softtabstop=4           " edit as if the tabs are 4 characters wide
@@ -245,6 +253,43 @@ nnoremap <silent> <leader>u :call functions#HtmlUnEscape()<cr>
 command! Rm call functions#Delete()
 command! RM call functions#Delete() <Bar> q!
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cscope maps
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+set cscopetag
+
+" check cscope for definition of a symbol before checking ctags: set to 1
+" if you want the reverse search order.
+set csto=0
+
+nmap <silent> <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <silent> <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <silent> <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <silent> <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <silent> <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> <C-Space><C-Space>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <silent> <C-Space><C-Space>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <silent> <C-Space><C-Space>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+
 " }}}
 
 " Section AutoGroups {{{
@@ -276,16 +321,59 @@ augroup END
 
 " Section Plugins {{{
 
-" FZF
-"""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Taglist
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+map <leader>tl :TlistToggle<cr>
+
+nnoremap <silent> <F8> :TlistToggle<CR><CR>
+
+let Tlist_Use_Right_Window=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Show_One_File=1
+
+" c language tag specifics
+let tlist_c_settings = 'c;d:macro;g:enum;s:struct;u:union;t:typedef;' .
+                           \ 'v:variable;f:function;p:prototype;x:external'
+
+" c++ language tag specifics
+let tlist_cpp_settings = 'c++;n:namespace;v:variable;d:macro;t:typedef;' .
+                             \ 'c:class;g:enum;s:struct;u:union;f:function;p:prototype;x:external'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cscope
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Path to store the cscope files (cscope.files and cscope.out)
+" Default to '~/.cscope'
+let g:cscope_dir = '~/.nvim-cscope'
+
+" Map the default keys on startup
+" These keys are prefixed by CTRL+\ <cscope param>
+" A.e.: CTRL+\ d for goto definition of world under cursor
+" Defaults to off
+let g:cscope_map_keys = 1
+
+" Update the cscope files on startup of cscope
+" Defaults to off
+let g:cscope_update_on_start = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Toggle NERDTree
 nmap <silent> <leader>k :NERDTreeToggle<cr>
 " expand to the path of the file in the current buffer
 nmap <silent> <leader>y :NERDTreeFind<cr>
 
 let NERDTreeShowHidden=1
-let NERDTreeDirArrowExpandable = '▷'
-let NERDTreeDirArrowCollapsible = '▼'
+let NERDTreeDirArrowExpandable = '+'
+let NERDTreeDirArrowCollapsible = '~'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" activate spell-checking alternatives
 
 let g:fzf_layout = { 'down': '~25%' }
 
@@ -324,20 +412,22 @@ command! FZFMru call fzf#run({
 \  'options': '-m -x +s',
 \  'down':    '40%'})
 
-command! -bang -nargs=* Find call fzf#vim#grep(
+command! -bang -nargs=* Rg call fzf#vim#grep(
 	\ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
 	\ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Emmet
-"""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:user_emmet_settings = {
 \  'javascript.jsx': {
 \      'extends': 'jsx',
 \  },
 \}
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fugitive Shortcuts
-"""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <silent> <leader>gs :Gstatus<cr>
 nmap <leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
@@ -349,8 +439,8 @@ nmap <leader>* *<c-o>:%s///gn<cr>
 
 let g:ale_change_sign_column_color = 1
 let g:ale_sign_column_always = 1
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
+let g:ale_sign_error = 'x'
+let g:ale_sign_warning = '!'
 " highlight clear ALEErrorSign
 " highlight clear ALEWarningSign
 

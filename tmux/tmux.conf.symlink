@@ -1,20 +1,21 @@
-set -g default-command "login-shell"
+# Do not use a login shell
+set -g default-command "exec $SHELL"
 
 # tmux display things in 256 colors
-set -g default-terminal "tmux-256color-italic"
+set -g default-terminal "xterm-256color"
 
 #  enable terminal compability
-set-option -ga terminal-overrides ",tmux-256color-italic:Tc"
+set-option -ga terminal-overrides ",xterm-256color:Tc"
 
 set -g history-limit 20000
 
 # automatically renumber tmux windows
 set -g renumber-windows on
 
-# unbind default prefix and set it to Ctrl+a
+# unbind default prefix and set it to Ctrl+space
 unbind C-b
-set -g prefix C-a
-bind C-a send-prefix
+set -g prefix C-Space
+bind C-Space send-prefix
 
 # for nested tmux sessions
 bind-key a send-prefix
@@ -90,15 +91,25 @@ unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind -Tcopy-mode-vi 'v' send -X begin-selection
-bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel "tmux save-buffer - | reattach-to-user-namespace pbcopy"
+#bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
+#bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 
 # Buffers to/from Mac clipboard, yay tmux book from pragprog
 bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
 
-##############################
-### Color & Style Settings ###
-##############################
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-sessionist'
+set -g @plugin 'tmux-plugins/tmux-logging'
+set -g @plugin 'tmux-plugins/tmux-yank'
 
-source ~/.dotfiles/tmux/theme.sh
+# for neovim
+set -g @resurrect-strategy-nvim 'session'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf) 
+
+run '~/.tmux/plugins/tpm/tpm'
+

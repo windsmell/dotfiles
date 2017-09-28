@@ -49,8 +49,6 @@ if [[ -d ~/bin ]]; then
     export PATH=~/bin:$PATH
 fi
 
-[ -z "$TMUX" ] && export TERM=xterm-256color-italic
-
 # install rbenv
 if command_exists rbenv; then
     eval "$(rbenv init -)"
@@ -80,3 +78,18 @@ if [ -z ${RELOAD} ]; then
     fi
 fi
 
+export all_proxy="http://child-prc.intel.com:913"
+export TERM=xterm-256color
+
+export ZEPHYR_GCC_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk
+
+# simics env
+export PATH=/opt/simics/simics-4.8/simics-4.8.190/bin:$PATH
+export ZEPHYR_BASE=~/Projects/git/always_on_ip
+
+# cargo
+export PATH=~/.cargo/bin:$PATH
+
+# systemc
+export SYSTEM_HOME=/usr/local/systemc-2.3.1

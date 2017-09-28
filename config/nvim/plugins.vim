@@ -18,11 +18,22 @@ call plug#begin('~/.config/nvim/plugged')
 
 " colorschemes
 Plug 'joshdick/onedark.vim'
+Plug 'freeo/vim-kalisi'
 Plug 'chriskempson/base16-vim'
+
+" vim-marp
+Plug 'dhruvasagar/vim-marp'
 
 " utilities
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons' " file drawer
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' " fuzzy file finder and so much more
+
+if isdirectory('/usr/local/opt/fzf')
+    Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' " fuzzy file finder and so much more
+else
+    Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+    Plug 'junegunn/fzf.vim'
+endif
+
 Plug 'mileszs/ack.vim' " search inside files using ack. Same as command line ack utility, but use :Ack
 Plug 'Raimondi/delimitMate' " automatic closing of quotes, parenthesis, brackets, etc.
 Plug 'tpope/vim-commentary' " comment stuff out
@@ -49,6 +60,12 @@ Plug 'AndrewRadev/splitjoin.vim' " single/multi line code handler: gS - split on
 Plug 'vim-scripts/matchit.zip' " extended % matching
 Plug 'tpope/vim-sleuth' " detect indent style (tabs vs. spaces)
 Plug 'sickill/vim-pasta' " context-aware pasting
+
+" c/c++
+Plug 'vim-scripts/c.vim', {'for': ['c','cpp']}
+Plug 'vim-scripts/taglist.vim'
+Plug 'ludwig/split-manpage.vim'
+Plug 'mfulz/cscope.nvim'
 
 " html / templates
 Plug 'mattn/emmet-vim', { 'for': ['html', 'javascript.jsx'] } " emmet support for vim - easily create markdup wth CSS-like syntax
