@@ -1,7 +1,7 @@
 # gitconfig
 [user]
 	name = Hu, Hebo
-	email = hebo.hu@intel.com
+	email = huhebo@gmail.com
 [github]
 	user = windsmell
 [init]
@@ -152,7 +152,7 @@
     extendRegexp = true
     lineNumber = true
 [credential]
-	helper = store
+	helper = cache --timeout 3600
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [mergetool "Kaleidoscope"]
@@ -164,13 +164,8 @@
     diff = "diff-so-fancy | less --tabs=4 -RFX"
     show = "diff-so-fancy | less --tabs=4 -RFX"
 
-[url "ssh://hhu16@android.intel.com:29418/"]
-	insteadOf=git://android.intel.com/
-	insteadOf=ssh://android.intel.com/
-	insteadOf=ssh://android.intel.com:29418/
-	insteadOf=git://android-mirror-sh.devtools.intel.com/
-	insteadOf=ssh://android-mirror-sh.devtools.intel.com/
-	insteadOf=git://android-mirror.devtools.intel.com/
-	insteadOf=ssh://android-mirror.devtools.intel.com/
-	insteadOf=ssh://android-mirror.devtools.intel.com:29418/
-
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

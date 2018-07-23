@@ -109,6 +109,9 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 # for neovim
 set -g @resurrect-strategy-nvim 'session'
 
+# save path 
+set -g @resurrect-dir '/home/hhb/.tmux/resurrect'
+
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf) 
 
 run '~/.tmux/plugins/tpm/tpm'

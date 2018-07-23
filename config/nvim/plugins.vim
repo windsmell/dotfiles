@@ -16,10 +16,23 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+function! BuildComposer(info)
+    if a:info.status != 'unchanged' || a:info.force
+        if has('nvim')
+            !cargo build --release
+        else
+            !cargo build --release --no-default-features --features json-rpc
+        endif
+    endif
+endfunction
+
 " colorschemes
 Plug 'joshdick/onedark.vim'
 Plug 'freeo/vim-kalisi'
 Plug 'chriskempson/base16-vim'
+
+" vim-markdown-composer
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer')}
 
 " vim-marp
 Plug 'dhruvasagar/vim-marp'
@@ -107,6 +120,12 @@ Plug 'elzr/vim-json', { 'for': 'json' } " JSON support
 Plug 'Shougo/vimproc.vim', { 'do': 'make' } " interactive command execution in vim
 Plug 'fatih/vim-go', { 'for': 'go' } " go support
 Plug 'timcharper/textile.vim', { 'for': 'textile' } " textile support
+
+" iron.nvim
+Plug 'hkupty/iron.nvim'
+
+"neoformat
+Plug 'sbdchd/neoformat'
 
 call plug#end()
 
