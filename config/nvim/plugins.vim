@@ -127,5 +127,8 @@ Plug 'hkupty/iron.nvim'
 "neoformat
 Plug 'sbdchd/neoformat'
 
+"neovim-gui-shim
+Plug 'equalsraf/neovim-gui-shim'
+
 call plug#end()
 

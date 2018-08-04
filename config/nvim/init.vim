@@ -386,6 +386,8 @@ else
     nmap <silent> <leader>t :FZF<cr>
 endif
 
+nmap <silent> <leader>f :Files<cr>
+
 nmap <silent> <leader>r :Buffers<cr>
 nmap <silent> <leader>e :FZF<cr>
 nmap <leader><tab> <plug>(fzf-maps-n)
